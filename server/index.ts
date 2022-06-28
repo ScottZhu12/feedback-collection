@@ -1,4 +1,6 @@
 import express, { Express, Request, Response } from 'express';
+import passport from 'passport';
+import GoogleStrategy from 'passport-google-oauth';
 
 // create express application and define port number
 const app: Express = express();

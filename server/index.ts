@@ -4,7 +4,7 @@ import GoogleStrategy from 'passport-google-oauth';
 
 // create express application and define port number
 const app: Express = express();
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 5000;
 
 app.get('/', (req: Request, res: Response) => {
   try {

@@ -1,5 +1,8 @@
 /node_modules
+/dist
+
+.env
+
 keys.ts
 keys.js
-.env
-/dist
+

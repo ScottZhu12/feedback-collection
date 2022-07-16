@@ -12,16 +12,16 @@ import userModel, { IUser } from '../models/usersModel';
 */
 
 // get piece of user info as cookie and save to session
-passport.serializeUser((user: any, done) => {
-  done(null, user.id);
-});
+// passport.serializeUser((user: any, done) => {
+//   done(null, user.id);
+// });
 
 // retrive the user document from session (cookie)
-passport.deserializeUser(async (id: ObjectId, done) => {
-  const foundUser = await userModel.findById(id);
+// passport.deserializeUser(async (id: ObjectId, done) => {
+//   const foundUser = await userModel.findById(id);
 
-  done(null, foundUser);
-});
+//   done(null, foundUser);
+// });
 
 // configure google strategy
 // callback function will be executed when user autherized app to access
@@ -35,26 +35,29 @@ passport.use(
       callbackURL: '/auth/google/callback',
       passReqToCallback: true,
     },
-    async (request, accessToken, refreshToken, profile, done) => {
+    (request, accessToken, refreshToken, profile, done) => {
+      console.log(accessToken);
+      console.log(refreshToken);
+      console.log(profile);
       // check if the user is already in mongodb
-      const foundUser = await userModel.findOne({ googleId: profile.id });
+      // const foundUser = await userModel.findOne({ googleId: profile.id });
 
-      if (foundUser) {
-        // user is already in the mongodb
-        // done() to inform passport the process is finished
-        done(null, foundUser);
-      } else {
-        // create a new user (document)
-        const user: HydratedDocument<IUser> = new userModel({
-          googleId: profile.id,
-        });
+      // if (foundUser) {
+      //   // user is already in the mongodb
+      //   // done() to inform passport the process is finished
+      //   done(null, foundUser);
+      // } else {
+      //   // create a new user (document)
+      //   const user: HydratedDocument<IUser> = new userModel({
+      //     googleId: profile.id,
+      //   });
 
-        // save the user in the mongodb
-        await user.save();
+      //   // save the user in the mongodb
+      //   await user.save();
 
-        // done() to inform passport the process is finished
-        done(null, user);
-      }
+      //   // done() to inform passport the process is finished
+      //   done(null, user);
+      // }
     }
   )
 );

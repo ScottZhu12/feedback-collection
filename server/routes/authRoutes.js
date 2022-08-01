@@ -3,14 +3,33 @@ const passport = require('passport');
 
 const authRouter = express.Router();
 
-// route user to the google signin page
-authRouter.route('/auth/google').get(
+// route to google signin page
+authRouter.get(
+  '/google',
   passport.authenticate('google', {
     scope: ['profile', 'email'],
   })
 );
 
-// retrieve user data using the access token (code) received
-authRouter.route('/auth/google/callback').get(passport.authenticate('google'));
+// route to after user signed in with google
+authRouter.get(
+  '/google/callback',
+  passport.authenticate('google', {
+    failureRedirect: '/failure',
+  }),
+  (req, res) => {
+    res.redirect('/protected');
+  }
+);
+
+// route to logout the user
+authRouter.get('/logout', (req, res) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+  });
+  res.redirect('/');
+});
 
 module.exports = authRouter;
